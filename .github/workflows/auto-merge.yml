@@ -41,7 +41,6 @@ jobs:
           # Now proceed to merge into develop, stage, release, main
           BRANCHES=("develop" "stage" "release" "main")
           for BRANCH in "${BRANCHES[@]}"; do
-            echo "$(pr_source_branch)"
             git checkout $BRANCH
             git pull origin $BRANCH
             git merge "$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"

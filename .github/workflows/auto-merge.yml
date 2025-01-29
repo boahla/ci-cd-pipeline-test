@@ -23,11 +23,11 @@ jobs:
       - name: Get hotfix branch name
         id: hotfix-branch
         run: |
-          echo "HOTFIX_BRANCH=$(git branch --show-current)" >> $GITHUB_ENV
-          echo "$(HOTFIX_BRANCH)"
-          if [[ "$HOTFIX_BRANCH" != hotfix/* ]]; then
-            echo "This is not a hotfix branch, exiting." && exit 1
-          fi
+          echo "$(git branch --show-current)"
+           echo "HOTFIX_BRANCH=$(git branch --show-current)" >> $GITHUB_ENV
+           if [[ "$HOTFIX_BRANCH" != hotfix/* ]]; then
+             echo "This is not a hotfix branch, exiting." && exit 1
+           fi
 
       - name: Merge to develop, stage, release and main
         run: |

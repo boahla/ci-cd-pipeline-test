@@ -41,6 +41,7 @@ jobs:
           # Now proceed to merge into develop, stage, release, main
           BRANCHES=("develop" "stage" "release" "main")
 
+          # Filtering branches, have to merge
           filtered_branches=()
 
           for branch in "${BRANCHES[@]}"; do
@@ -49,6 +50,7 @@ jobs:
           fi
           done
 
+          # Merge each branches
           for BRANCH in "${filtered_branches[@]}"; do
             git checkout $BRANCH
             git pull origin $BRANCH

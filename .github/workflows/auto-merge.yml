@@ -20,6 +20,10 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
+      - name: Fetch all branches
+        run: |
+          git fetch --all  # 원격 저장소의 모든 브랜치 정보를 가져옵니다.
+
       - name: Check if the PR is a hotfix branch
         run: |
           # Get the source branch of the PR

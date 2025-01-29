@@ -1,0 +1,39 @@
+name: Auto Merge Hotfix to Other Branches
+
+on:
+  push:
+    branches:
+      - "main"
+      - "release"
+    paths-ignore:
+      - ".github/*" # GitHub Actions 워크플로우 파일 변경 시 실행되지 않도록 설정
+
+jobs:
+  auto-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Get hotfix branch name
+        id: hotfix-branch
+        run: |
+          echo "HOTFIX_BRANCH=$(git branch --show-current)" >> $GITHUB_ENV
+          if [[ "$HOTFIX_BRANCH" != hotfix/* ]]; then
+            echo "This is not a hotfix branch, exiting." && exit 1
+          fi
+
+      - name: Merge to develop, stage, release and main
+        run: |
+          BRANCHES=("develop" "stage" "release" "main")
+          for BRANCH in "${BRANCHES[@]}"; do
+            git checkout $BRANCH
+            git pull origin $BRANCH
+            git merge $HOTFIX_BRANCH --no-ff -m "Merge hotfix $HOTFIX_BRANCH into $BRANCH"
+            git push origin $BRANCH
+          done

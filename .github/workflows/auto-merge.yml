@@ -43,7 +43,8 @@ jobs:
           for BRANCH in "${BRANCHES[@]}"; do
             git checkout $BRANCH
             git pull origin $BRANCH
-            git branch
-            git merge "$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"
+            git branch -r
+            git branch -a
+            git merge origin "$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"
             git push origin $BRANCH
           done

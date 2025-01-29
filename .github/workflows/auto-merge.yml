@@ -45,5 +45,8 @@ jobs:
             git pull origin $BRANCH
             git branch -a
             git merge origin/"$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"
+
+            # Authenticate with GITHUB_TOKEN
+            git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
             git push origin $BRANCH
           done

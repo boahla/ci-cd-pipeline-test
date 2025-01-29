@@ -40,10 +40,18 @@ jobs:
 
           # Now proceed to merge into develop, stage, release, main
           BRANCHES=("develop" "stage" "release" "main")
-          for BRANCH in "${BRANCHES[@]}"; do
+
+          filtered_branches=()
+
+          for branch in "${BRANCHES[@]}"; do
+          if [[ "$branch" != "$pr_target_branch" ]]; then
+          filtered_branches+=("$branch")
+          fi
+          done
+
+          for BRANCH in "${filtered_branches[@]}"; do
             git checkout $BRANCH
             git pull origin $BRANCH
-            git branch -a
             git merge origin/"$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"
 
             # Authenticate with GITHUB_TOKEN

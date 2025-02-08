@@ -23,5 +23,6 @@ jobs:
             ## feat/${{ github.ref_name }} 브랜치에서 작업한 내용입니다.
 
             ## 변경사항 및 테스트 방법을 작성해 주세요.
+
           base: "develop"
           branch: ${{ github.ref }}

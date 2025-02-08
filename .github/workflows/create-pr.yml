@@ -16,7 +16,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.CREATE_PR_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
           title: "✨ feat: ${{ github.ref_name }}"
           body: |

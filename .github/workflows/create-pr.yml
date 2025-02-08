@@ -18,14 +18,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-          title: "✨ feat: ${{ secrets.CREATE_PR_TOKEN }}"
+          title: "✨ feat: ${{ github.ref_name  }}"
           body: |
-            ## 변경사항
-            - feat/${{ github.ref_name }} 브랜치에서 작업한 내용입니다.
+            ## feat/${{ github.ref_name }} 브랜치에서 작업한 내용입니다.
 
-            ## 체크리스트
-            - [ ] 코드 리뷰가 필요합니다
-            - [ ] 테스트가 완료되었습니다
+            ## 변경사항 및 테스트 방법을 작성해 주세요.
           base: "develop"
           branch: ${{ github.ref }}
-          draft: true

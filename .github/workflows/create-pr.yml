@@ -1,4 +1,4 @@
-name: Automatically create PR
+name: Auto Create PR for Feature Branches
 
 on:
   push:
@@ -11,15 +11,20 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.CREATE_PR_TOKEN }}
-          commit-message: Create PR with changes
-          base: develop
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "✨ feat: ${{ github.ref_name }}"
+          body: |
+            ## 변경사항
+            - feat/${{ github.ref_name }} 브랜치에서 작업한 내용입니다.
+
+            ## 체크리스트
+            - [ ] 코드 리뷰가 필요합니다
+            - [ ] 테스트가 완료되었습니다
+          base: "develop"
           branch: ${{ github.ref }}
-          assignees: kec0130
-          title: BLOG POST UPDATE
-          body: 블로그 업데이트 되었습니다. 확인해주세용.
+          draft: true

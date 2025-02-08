@@ -18,7 +18,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-          title: "✨ feat: ${{ github.ref_name }}"
+          title: "✨ feat: ${{ secrets.CREATE_PR_TOKEN }}"
           body: |
             ## 변경사항
             - feat/${{ github.ref_name }} 브랜치에서 작업한 내용입니다.

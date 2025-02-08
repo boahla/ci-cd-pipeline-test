@@ -30,6 +30,6 @@ jobs:
             ${{ github.ref_name }} 브랜치에서 작업한 내용들을 작성해 주세요.
 
             ## Check List
-            [] 체크리스트 작성해 주세요.
+            [ ] 체크리스트 작성해 주세요.
           draft: true
           delete-branch: true

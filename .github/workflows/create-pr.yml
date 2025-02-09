@@ -2,8 +2,8 @@ name: Create PR
 on:
   push:
     branches:
-      - 'feat/*'
-      - 'hotfix/*'
+      - "feat/*"
+      - "hotfix/*"
 
 jobs:
   create-pr:
@@ -29,7 +29,7 @@ jobs:
             ## Check List
             - [ ] 체크리스트 작성해 주세요.
           delete-branch: true
-           draft: ${{ startsWith(github.ref_name, 'feat/') }}
+          draft: ${{ startsWith(github.ref_name, 'feat/') }}
           labels: |
             ${{ startsWith(github.ref_name, 'hotfix/') && 'fix' || 'feat' }}
             ${{ startsWith(github.ref_name, 'feat/') && 'wip' || '' }}

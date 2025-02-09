@@ -19,7 +19,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           base: "develop"
           branch: ${{ github.ref }}
-          title: "✨ feat: ${{ github.ref_name  }}"
+          title: "✨ feat : ${{ github.ref_name  }}"
           body: |
             ## Why need this PR?
             - Figma 링크

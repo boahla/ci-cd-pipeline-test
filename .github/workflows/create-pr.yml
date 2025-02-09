@@ -17,9 +17,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: "${{ github.ref_name === 'hotfix/'  ? 'main' : 'develop' }}"
+          base: "develop"
           branch: ${{ github.ref }}
-          title: "✨ ${{ github.ref_name === 'hotfix/'  ? 'hotfix' : 'feat' }} : ${{ github.ref_name  }}"
+          title: "✨ feat : ${{ github.ref_name  }}"
           body: |
             ## Why need this PR?
             - Figma 링크
@@ -34,6 +34,6 @@ jobs:
             - [ ] 체크리스트 작성해 주세요.
           draft: true
           delete-branch: true
-          # labels: |
-          #   feat
-          #   wip
+          labels: |
+            feat
+            wip

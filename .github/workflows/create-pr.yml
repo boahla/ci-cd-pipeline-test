@@ -1,25 +1,21 @@
-name: Auto Create PR for Feature Branches
-
+name: Create PR
 on:
   push:
     branches:
-      - feat/*
+      - 'feat/*'
+      - 'hotfix/*'
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: "develop"
+          base: ${{ startsWith(github.ref_name, 'hotfix/') && 'main' || 'develop' }}
           branch: ${{ github.ref }}
-          title: "✨ feat : ${{ github.ref_name  }}"
+          title: "${{ startsWith(github.ref_name, 'hotfix/') && '🔨 hotfix:' || '✨ feat:' }} ${{ github.ref_name }}"
           body: |
             ## Why need this PR?
             - Figma 링크
@@ -32,8 +28,8 @@ jobs:
 
             ## Check List
             - [ ] 체크리스트 작성해 주세요.
-          draft: true
           delete-branch: true
+           draft: ${{ startsWith(github.ref_name, 'feat/') }}
           labels: |
-            feat
-            wip
+            ${{ startsWith(github.ref_name, 'hotfix/') && 'fix' || 'feat' }}
+            ${{ startsWith(github.ref_name, 'feat/') && 'wip' || '' }}

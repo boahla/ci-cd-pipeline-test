@@ -32,4 +32,4 @@ jobs:
           draft: ${{ startsWith(github.ref_name, 'feat/') }}
           labels: |
             ${{ startsWith(github.ref_name, 'hotfix/') && 'fix' || 'feat' }}
-            ${{ startsWith(github.ref_name, 'feat/') && 'wip' || '' }}
+            ${{ startsWith(github.ref_name, 'hotfix/') && 'review needed' || 'wip' }}

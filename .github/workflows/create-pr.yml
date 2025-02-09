@@ -1,0 +1,39 @@
+name: Auto Create PR for Feature Branches
+
+on:
+  push:
+    branches:
+      - feat/*
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: "develop"
+          branch: ${{ github.ref }}
+          title: "✨ feat : ${{ github.ref_name  }}"
+          body: |
+            ## Why need this PR?
+            - Figma 링크
+            - Jira 이슈
+
+            작업 내용의 개요를 작성해 주세요.
+
+            ## Changes
+            ${{ github.ref_name }} 브랜치에서 작업한 내용들을 작성해 주세요.
+
+            ## Check List
+            - [ ] 체크리스트 작성해 주세요.
+          draft: true
+          delete-branch: true
+          labels: |
+            feat
+            wip

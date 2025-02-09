@@ -55,7 +55,5 @@ jobs:
             git checkout $BRANCH
             git pull origin $BRANCH
             git merge origin/"$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"
-
-           
             git push origin $BRANCH
           done

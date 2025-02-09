@@ -32,8 +32,6 @@ jobs:
 
             ## Check List
             - [ ] 체크리스트 작성해 주세요.
-          draft: true
           delete-branch: true
           labels: |
             fix
-            wip

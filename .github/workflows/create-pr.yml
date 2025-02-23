@@ -31,4 +31,4 @@ jobs:
           delete-branch: true
           draft: ${{ startsWith(github.ref_name, 'feat/') }}
           labels: ${{ startsWith(github.ref_name, 'hotfix/') && 'fix' || 'feat,wip' }}
-          create-when-empty: false
+          # create-when-empty: false

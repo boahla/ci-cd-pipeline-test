@@ -4,16 +4,17 @@ on:
   pull_request:
     types: [closed] # PR이 종료되었을 때만 실행 (머지된 경우)
     branches:
-      - "main"
       - "release"
+      - "main"
 
 jobs:
   auto-merge:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'hotfix')
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Git
         run: |
@@ -24,36 +25,14 @@ jobs:
         run: |
           git remote update
 
-      - name: Check if the PR is a hotfix branch
+      - name: Merge to develop
         run: |
-          # Get the source branch of the PR
-          pr_source_branch="${{ github.event.pull_request.head.ref }}"
-          pr_target_branch="${{ github.event.pull_request.base.ref }}"
+          git checkout develop
+          git merge --no-ff ${{ github.event.pull_request.head.ref }}
+          git push origin develop
 
-          echo "Source branch: $pr_source_branch"
-          echo "Target branch: $pr_target_branch"
-
-          # Check if the source branch is a hotfix branch
-          if [[ "$pr_source_branch" != hotfix/* ]]; then
-            echo "This is not a hotfix branch, exiting." && exit 1
-          fi
-
-          # Now proceed to merge into develop, stage, release, main
-          BRANCHES=("develop" "stage" "release" "main")
-
-          # Filtering branches, have to merge
-          filtered_branches=()
-
-          for branch in "${BRANCHES[@]}"; do
-          if [[ "$branch" != "$pr_target_branch" ]]; then
-          filtered_branches+=("$branch")
-          fi
-          done
-
-          # Merge each branches
-          for BRANCH in "${filtered_branches[@]}"; do
-            git checkout $BRANCH
-            git pull origin $BRANCH
-            git merge origin/"$pr_source_branch" --no-ff -m "Merge hotfix $pr_source_branch into $BRANCH"
-            git push origin $BRANCH
-          done
+      - name: Merge to stage
+        run: |
+          git checkout stage
+          git merge --no-ff ${{ github.event.pull_request.head.ref }}
+          git push origin stage

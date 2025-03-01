@@ -36,5 +36,5 @@ jobs:
       - name: Merge to stage
         run: |
           git checkout stage
-          git merge --no-ff ${{ github.event.pull_request.head.ref }}
+          git merge ${{ github.event.pull_request.head.ref }}
           git push origin stage

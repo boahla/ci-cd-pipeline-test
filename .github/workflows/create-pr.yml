@@ -22,8 +22,10 @@ jobs:
               head: `${context.repo.owner}:${context.ref.split('/').slice(2).join('/')}`,
               state: 'open'
             });
-            return pulls.length > 0;
+            core.setOutput('has_pr', pulls.length > 0);
+
       - name: Create Pull Request
+        if: ${{ steps.check-pr.outputs.has_pr == 'false' }}
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

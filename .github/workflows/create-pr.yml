@@ -1,25 +1,37 @@
-name: Auto Create PR for Feature Branches
-
+name: Create PR
 on:
   push:
     branches:
-      - feat/*
+      - "feat/*"
+      - "hotfix/*"
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Check if PR exists
+        uses: actions/github-script@v6
+        id: check-pr
+        with:
+          script: |
+            const { data: pulls } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${context.ref.split('/').slice(2).join('/')}`,
+              state: 'open'
+            });
+            core.setOutput('has_pr', pulls.length > 0);
 
       - name: Create Pull Request
+        if: ${{ steps.check-pr.outputs.has_pr == 'false' }}
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: "develop"
+          base: ${{ startsWith(github.ref_name, 'hotfix/') && 'main' || 'develop' }}
           branch: ${{ github.ref }}
-          title: "✨ feat : ${{ github.ref_name  }}"
+          title: "${{ startsWith(github.ref_name, 'hotfix/') && '🔨 hotfix:' || '✨ feat:' }} ${{ github.ref_name }}"
           body: |
             ## Why need this PR?
             - Figma 링크
@@ -30,10 +42,7 @@ jobs:
             ## Changes
             ${{ github.ref_name }} 브랜치에서 작업한 내용들을 작성해 주세요.
 
-            ## Check List
-            - [ ] 체크리스트 작성해 주세요.
-          draft: true
           delete-branch: true
-          labels: |
-            feat
-            wip
+          draft: ${{ startsWith(github.ref_name, 'feat/') }}
+          labels: ${{ startsWith(github.ref_name, 'hotfix/') && 'fix' || 'feat,wip' }}
+          # create-when-empty: false

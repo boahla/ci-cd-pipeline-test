@@ -11,6 +11,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Check if PR exists
+        uses: actions/github-script@v6
+        id: check-pr
+        with:
+          script: |
+            const { data: pulls } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${context.ref.split('/').slice(2).join('/')}`,
+              state: 'open'
+            });
+            return pulls.length > 0;
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
